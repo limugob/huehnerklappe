@@ -37,7 +37,7 @@ class Door:
 
     def pre_close_hook(self):
         # play some music before close
-        print(subprocess.Popen(['mpg123', '-q', MP3_PATH]).wait())
+        print(subprocess.Popen(['mpg123', '-g 200', '-q', MP3_PATH]).wait())
 
 
 # Verwendete Pins am Rapberry Pi
