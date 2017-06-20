@@ -47,7 +47,6 @@ def wait_and_close_door():
     time.sleep(time_diff.seconds)
     print('Klappe schließt', datetime.now(UTC).astimezone(TIMEZONE))
     door.close()
-    wait_and_open_door()
 
 def wait_and_open_door():
     print('wait_and_open_door')
@@ -75,12 +74,11 @@ def wait_and_open_door():
     print('Klappe öffnet', datetime.now(UTC).astimezone(TIMEZONE))
     door.open()
 
-    wait_and_close_door()
-
 
 if __name__ == '__main__':
-    if door.is_open():
-        wait_and_close_door()
-    else:
-        wait_and_open_door()
+    while True:
+        if door.is_open():
+            wait_and_close_door()
+        else:
+            wait_and_open_door()
 
