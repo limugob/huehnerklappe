@@ -145,7 +145,8 @@ def turn(steps_count, up=False):
         steps.reverse()
 
     try:
-        init()
+        init(motor1)
+        init(motor2)
         for i in range(steps_count):
             for motor_step in steps:
                 motor_step(motor1, motor2)
