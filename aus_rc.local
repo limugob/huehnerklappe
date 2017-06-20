@@ -1,0 +1,2 @@
+. /home/pi/python_venv/bin/activate
+/usr/bin/env python /home/pi/huehnerklappe/ablauf.py &
