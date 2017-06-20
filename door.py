@@ -11,7 +11,7 @@ USER = ''
 PASS = ''
 MP3_PATH = './Ennio_Morricone.mp3'
 
-STEPS_COUNT = 1000
+STEPS_COUNT = 4000
 
 class Door:
     # if STATE_FILE exists, the door is closed.
@@ -145,7 +145,8 @@ def turn(steps_count, up=False):
         steps.reverse()
 
     try:
-        init()
+        init(motor1)
+        init(motor2)
         for i in range(steps_count):
             for motor_step in steps:
                 motor_step(motor1, motor2)
