@@ -26,14 +26,14 @@ class Door:
     def open(self):
         os.remove(self.state_file)
         turn(STEPS_COUNT)
-        requests.post('https://limugob.pythonanywhere.com/log', data={'message': 'DOOR_OPEN'}, auth=(USER,PASS))
+        # requests.post('https://limugob.pythonanywhere.com/log', data={'message': 'DOOR_OPEN'}, auth=(USER,PASS))
 
     def close(self):
         self.pre_close_hook()
         file = open(self.state_file, 'w')
         file.close()
         turn(STEPS_COUNT, up=True)
-        requests.post('https://limugob.pythonanywhere.com/log', data={'message': 'DOOR_CLOSE'}, auth=(USER,PASS))
+        # requests.post('https://limugob.pythonanywhere.com/log', data={'message': 'DOOR_CLOSE'}, auth=(USER,PASS))
 
     def pre_close_hook(self):
         # play some music before close
@@ -41,77 +41,94 @@ class Door:
 
 
 # Verwendete Pins am Rapberry Pi
-A=17
-B=18
-C=27
-D=22
+motor1 = (17, 18, 27, 22)
+motor2 = (23, 24, 25, 4)
 
 SLEEP_TIME = 0.001
 
-def init():
+def init(motor):
     GPIO.setmode(GPIO.BCM)
-    # Pins aus Ausaenge definieren
-    GPIO.setup(A,GPIO.OUT)
-    GPIO.setup(B,GPIO.OUT)
-    GPIO.setup(C,GPIO.OUT)
-    GPIO.setup(D,GPIO.OUT)
-    GPIO.output(A, False)
-    GPIO.output(B, False)
-    GPIO.output(C, False)
-    GPIO.output(D, False)
+    # Pins aus Ausgaenge definieren
+    GPIO.setup(motor[0],GPIO.OUT)
+    GPIO.setup(motor[1],GPIO.OUT)
+    GPIO.setup(motor[2],GPIO.OUT)
+    GPIO.setup(motor[3],GPIO.OUT)
+    GPIO.output(motor[0], False)
+    GPIO.output(motor[1], False)
+    GPIO.output(motor[2], False)
+    GPIO.output(motor[3], False)
 
-def Step1():
-    GPIO.output(D, True)
+def Step1(motor1, motor2):
+    GPIO.output(motor1[3], True)
+    GPIO.output(motor2[3], True)
     sleep (SLEEP_TIME)
-    GPIO.output(D, False)
+    GPIO.output(motor1[3], False)
+    GPIO.output(motor2[3], False)
 
-def Step2():
-    GPIO.output(D, True)
-    GPIO.output(C, True)
-    sleep (SLEEP_TIME)
-    GPIO.output(D, False)
-    GPIO.output(C, False)
+def Step2(motor1, motor2):
+    GPIO.output(motor1[3], True)
+    GPIO.output(motor1[2], True)
+    GPIO.output(motor2[3], True)
+    GPIO.output(motor2[2], True)
+    sleep(SLEEP_TIME)
+    GPIO.output(motor1[3], False)
+    GPIO.output(motor1[2], False)
+    GPIO.output(motor2[3], False)
+    GPIO.output(motor2[2], False)
 
-def Step3():
-    GPIO.output(C, True)
-    sleep (SLEEP_TIME)
-    GPIO.output(C, False)
+def Step3(motor1, motor2):
+    GPIO.output(motor1[2], True)
+    GPIO.output(motor2[2], True)
+    sleep(SLEEP_TIME)
+    GPIO.output(motor1[2], False)
+    GPIO.output(motor2[2], False)
 
-def Step3():
-    GPIO.output(C, True)
-    sleep (SLEEP_TIME)
-    GPIO.output(C, False)
+def Step4(motor1, motor2):
+    GPIO.output(motor1[1], True)
+    GPIO.output(motor1[2], True)
+    GPIO.output(motor2[1], True)
+    GPIO.output(motor2[2], True)
+    sleep(SLEEP_TIME)
+    GPIO.output(motor1[1], False)
+    GPIO.output(motor1[2], False)
+    GPIO.output(motor2[1], False)
+    GPIO.output(motor2[2], False)
 
-def Step4():
-    GPIO.output(B, True)
-    GPIO.output(C, True)
-    sleep (SLEEP_TIME)
-    GPIO.output(B, False)
-    GPIO.output(C, False)
+def Step5(motor1, motor2):
+    GPIO.output(motor1[1], True)
+    GPIO.output(motor2[1], True)
+    sleep(SLEEP_TIME)
+    GPIO.output(motor1[1], False)
+    GPIO.output(motor2[1], False)
 
-def Step5():
-    GPIO.output(B, True)
-    sleep (SLEEP_TIME)
-    GPIO.output(B, False)
+def Step6(motor1, motor2):
+    GPIO.output(motor1[0], True)
+    GPIO.output(motor1[1], True)
+    GPIO.output(motor2[0], True)
+    GPIO.output(motor2[1], True)
+    sleep(SLEEP_TIME)
+    GPIO.output(motor1[0], False)
+    GPIO.output(motor1[1], False)
+    GPIO.output(motor2[0], False)
+    GPIO.output(motor2[1], False)
 
-def Step6():
-    GPIO.output(A, True)
-    GPIO.output(B, True)
-    sleep (SLEEP_TIME)
-    GPIO.output(A, False)
-    GPIO.output(B, False)
+def Step7(motor1, motor2):
+    GPIO.output(motor1[0], True)
+    GPIO.output(motor2[0], True)
+    sleep(SLEEP_TIME)
+    GPIO.output(motor1[0], False)
+    GPIO.output(motor2[0], False)
 
-def Step7():
-    GPIO.output(A, True)
-    sleep (SLEEP_TIME)
-    GPIO.output(A, False)
-
-def Step8():
-    GPIO.output(D, True)
-    GPIO.output(A, True)
-    sleep (SLEEP_TIME)
-    GPIO.output(D, False)
-    GPIO.output(A, False)
+def Step8(motor1, motor2):
+    GPIO.output(motor1[3], True)
+    GPIO.output(motor1[0], True)
+    GPIO.output(motor2[3], True)
+    GPIO.output(motor2[0], True)
+    sleep(SLEEP_TIME)
+    GPIO.output(motor1[3], False)
+    GPIO.output(motor1[0], False)
+    GPIO.output(motor2[3], False)
+    GPIO.output(motor2[0], False)
 
 
 def turn(steps_count, up=False):
@@ -131,7 +148,7 @@ def turn(steps_count, up=False):
         init()
         for i in range(steps_count):
             for motor_step in steps:
-                motor_step()
+                motor_step(motor1, motor2)
 
     finally:
         GPIO.cleanup()
