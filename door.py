@@ -16,6 +16,7 @@ STEPS_COUNT = 4000
 class BadState(Exception):
     """Exception raised when operation and state don't fit together
     """
+    pass
 
 class Door:
     # if STATE_FILE exists, the door is closed.
