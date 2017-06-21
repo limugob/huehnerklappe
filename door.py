@@ -13,6 +13,10 @@ MP3_PATH = './Ennio_Morricone.mp3'
 
 STEPS_COUNT = 4000
 
+class BadState(Exception):
+    """Exception raised when operation and state don't fit together
+    """
+
 class Door:
     # if STATE_FILE exists, the door is closed.
     state_file = './state_file'
@@ -24,11 +28,15 @@ class Door:
         return os.path.exists(self.state_file)
 
     def open(self):
+        if self.is_open():
+            raise BadState()
         os.remove(self.state_file)
         turn(STEPS_COUNT)
         # requests.post('https://limugob.pythonanywhere.com/log', data={'message': 'DOOR_OPEN'}, auth=(USER,PASS))
 
     def close(self):
+        if self.is_closed():
+            raise BadState()
         self.pre_close_hook()
         file = open(self.state_file, 'w')
         file.close()
