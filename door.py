@@ -11,7 +11,7 @@ USER = ''
 PASS = ''
 MP3_PATH = './Ennio_Morricone.mp3'
 
-STEPS_COUNT = 4000
+STEPS_COUNT = 13250
 
 class BadState(Exception):
     """Exception raised when operation and state don't fit together
